@@ -8,38 +8,67 @@ namespace ex01.Services
     {
         private readonly ProductRepository _repository = new();
 
+        //GetProducts
+        public List<ProductDto> GetProducts()
+        {
+            return _repository.GetProducts();
+        }
 
+        //GetProductById
+        public ProductDto GetProductById(int id)
+        {
+            return _repository.GetProductById(id);
+        }
+
+        //UpdateProduct
+        public ProductDto UpdateProduct(int id, Product p)
+        {
+            return _repository.UpdateProduct(id, p);
+        }
+
+        //GetProductByCategory
         public List<ProductDto> GetProductByCategory(string c)
         {
             return _repository.GetProductByCategory(c);
         }
+
+        //GetProductOrderByName
         public List<ProductDto> GetProductOrderByName()
         {
             return _repository.GetProductOrderByName();
         }
+
+        //GetProductWithCategories
         public List<ProductWithCategoriesDto> GetProductWithCategories()
         {
             return _repository.GetProductWithCategories();
         }
-        public ProductDto deleteProduct(string id)
+
+        //deleteProduct
+        public ProductDto deleteProduct(int id)
         {
             return _repository.deleteProduct(id);
         }
+
+
+        //productNotDeleted
         public List<ProductDto> productNotDeleted()
         {
             return _repository.productNotDeleted();
         }
+
+
+        //createProducts
         public List<ProductDto> createProducts(List<CreateProductDto> p)
         {
             return _repository.createProducts(p);
         }
-        public List<BagDto> bags()
+
+        //PaginationProducts
+        public List<ProductDto> PaginationProducts(int page = 1, int size = 5)
         {
-            return _repository.bags();
+            return _repository.PaginationProducts(page, size);
         }
-        //public int CreateCategoryWithProc(string name)
-        //{
-        //    return _repository.CreateCategoryWithProc(name);
-        //}
+
     }
 }

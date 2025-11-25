@@ -1,6 +1,7 @@
 ﻿using ex01.Data;
 using ex01.Dto;
 using ex01.Models;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
 
@@ -10,7 +11,50 @@ namespace ex01.Repositories
     {
         StoreDbContext context = StoreContextFactory.CreateContext();
 
-        public List<ProductDto> GetProductByCategory(string ca="")
+
+        //GetProducts
+        public List<ProductDto> GetProducts()
+        {
+            return context.products
+            .Select(a => new ProductDto()
+            {
+                Name = a.Name,
+                Desc = a.Desc,
+                ImageUrl = a.ImageUrl,
+                Price = a.Price,
+            }).ToList();
+        }
+
+        //GetProductById
+        public ProductDto GetProductById(int id)
+        {
+            var items = context.products.Where(y => y.Id == id).ToList();
+            return new ProductDto()
+            {
+                Name = items[0].Name,
+                Desc = items[0].Desc,
+                ImageUrl = items[0].ImageUrl,
+                Price = items[0].Price,
+            };
+        }
+
+        //UpdateProduct
+        public ProductDto UpdateProduct(int id, Product p)
+        {
+            var items = context.products.Where(y => y.Id == id).ToList();
+            var item = items[0];
+            item.Name = p.Name;
+            item.ImageUrl = p.ImageUrl;
+            item.Price = p.Price;
+            item.Desc = p.Desc;
+            item.Sale= p.Sale;
+            item.Colors = p.Colors;
+            context.SaveChanges();
+            return GetProductById(id);
+        }
+
+        //GetProductByCategory
+        public List<ProductDto> GetProductByCategory(string ca = "")
         {
             return context.products
             .Include(c => c.Categories)
@@ -19,11 +63,14 @@ namespace ex01.Repositories
             {
                 Name = a.Name,
                 Desc = a.Desc,
-                ImageUrl = a.ImageUrl,  
+                ImageUrl = a.ImageUrl,
                 Price = a.Price,
             }).ToList();
         }
-        public List<ProductDto> GetProductOrderByName(string ca = "")
+
+
+        //GetProductOrderByName
+        public List<ProductDto> GetProductOrderByName()
         {
             return context.products.Select(a => new ProductDto()
             {
@@ -31,42 +78,50 @@ namespace ex01.Repositories
                 Desc = a.Desc,
                 ImageUrl = a.ImageUrl,
                 Price = a.Price,
-            }).OrderBy(x=>x.Name).ToList();
-        }
-        public List<ProductWithCategoriesDto> GetProductWithCategories(string ca = "")
-        {
-            return context.products.Include(x=>x.Categories).Select(a => new ProductWithCategoriesDto()
-            {
-                Name = a.Name,
-                Desc = a.Desc,
-                ImageUrl = a.ImageUrl,
-                Price = a.Price,
-                Categories = a.Categories   
             }).OrderBy(x => x.Name).ToList();
         }
-        public ProductDto deleteProduct(string id)
+
+
+        //GetProductWithCategories
+        public List<ProductWithCategoriesDto> GetProductWithCategories()
         {
-            var item= context.products.Where(y => y.Id==id).ToList();
-            item[0].IsDeleted = true;
-            context.SaveChanges();
-            return new ProductDto()
-            {
-                Name = item[0].Name,
-                Desc = item[0].Desc,
-                ImageUrl = item[0].ImageUrl,
-                Price = item[0].Price,
-            };
-        }
-        public List<ProductDto> productNotDeleted()
-        {
-            return context.products.Where(x => !x.IsDeleted). Select(a => new ProductDto()
+            return context.products.Include(x => x.Categories).Select(a => new ProductWithCategoriesDto()
             {
                 Name = a.Name,
                 Desc = a.Desc,
                 ImageUrl = a.ImageUrl,
                 Price = a.Price,
-            }).ToList();    
+                Categories = a.Categories
+            }).OrderBy(x => x.Name).ToList();
         }
+
+
+        //deleteProduct
+        public ProductDto deleteProduct(int id)
+        {
+            var items = context.products.Where(y => y.Id == id).ToList();
+            var item = items[0];
+            item.IsDeleted = true;
+            context.SaveChanges();
+            return GetProductById(id);
+        }
+
+
+        //productNotDeleted
+        public List<ProductDto> productNotDeleted()
+        {
+            return context.products.Where(x => !x.IsDeleted).Select(a => new ProductDto()
+            {
+                Name = a.Name,
+                Desc = a.Desc,
+                ImageUrl = a.ImageUrl,
+                Price = a.Price,
+            }).ToList();
+        }
+
+
+
+        //createProducts
         public List<ProductDto> createProducts(List<CreateProductDto> products)
         {
             for (int i = 0; i < products.Count; i++)
@@ -77,63 +132,28 @@ namespace ex01.Repositories
                     Desc = products[i].Desc,
                     ImageUrl = products[i].ImageUrl,
                     Price = products[i].Price,
-                    Categories= products[i].Categories
+                    Categories = products[i].Categories
                 });
             }
             context.SaveChanges();
             return context.products.Select(a => new ProductDto()
-                        {
-                            Name = a.Name,
-                            Desc = a.Desc,
-                            ImageUrl = a.ImageUrl,
-                            Price = a.Price,
-                        }).ToList();
+            {
+                Name = a.Name,
+                Desc = a.Desc,
+                ImageUrl = a.ImageUrl,
+                Price = a.Price,
+            }).ToList();
         }
-        public List<BagDto> bags()
-        {
-           return context.bags.Include(x => x.Product).Select(x => new BagDto() {Id=x.Id,Product=x.Product }).ToList();
-           
+
+
+        //PaginationProducts
+        public List<ProductDto> PaginationProducts( int page = 1, int size = 5)
+        {            
+            return GetProducts()
+            .Skip((page - 1) * size)
+            .Take(size)
+            .ToList();
         }
-        //public int CreateCategoryWithProc(string name)
-        //{
-        //    var outputParam = new SqlParameter
-        //    {
-        //        ParameterName = "@NewId",
-        //        SqlDbType = System.Data.SqlDbType.Int,
-        //        Direction = System.Data.ParameterDirection.Output
-        //    };
 
-        //    var parameters = new[]
-        //    {
-        //        new SqlParameter("@Name", name),
-        //        outputParam
-        //     };
-
-
-        //    context.Database.ExecuteSqlRaw(
-        //    "EXEC spAddCategory @Name,@NewId OUTPUT",
-        //    parameters);
-
-        //    // Get the output value
-        //    int newId = (int)outputParam.Value;
-
-
-        //    return newId;
-        //}
-
-        //public void userWithBag()
-        //{
-        //    using var transaction = context.Database.BeginTransaction();
-        //    try
-        //    {
-                
-        //        transaction.Commit();
-        //    }
-        //    catch
-        //    {
-        //        transaction.Rollback();
-        //        throw;
-        //    }
-        //}
     }
 }

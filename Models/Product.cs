@@ -5,7 +5,7 @@ namespace ex01.Models;
 
 public partial class Product
 {
-    public string Id { get; set; } = null!;
+    public int Id { get; set; } = 0!;
 
     public string Name { get; set; } = null!;
 

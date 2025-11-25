@@ -8,6 +8,7 @@ namespace ex01.Data
         public DbSet<Product> products=>Set<Product>();
         public DbSet<Category> categories => Set<Category>();
         public DbSet<Bag> bags => Set<Bag>();
+        public DbSet<User> users => Set<User>();
 
         public object Database { get; internal set; }
     }

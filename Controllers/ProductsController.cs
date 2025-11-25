@@ -10,79 +10,69 @@ namespace ex01.Controllers
     [ApiController]
     public class ProductsController : ControllerBase
     {
-        public List<Product> productsList = new List<Product>()
-        {
-            new Product(){Id="1",Name="bag",Price=123,Desc="aaaaaaaaa"},
-            new Product(){Id="2",Name="mirror",Price=50,Desc="bbbbbbbbbb"},
-            new Product(){Id="3",Name="mirror",Price=50,Desc="bbbbbbbbbb"},
-            new Product(){Id="4",Name="mirror",Price=50,Desc="bbbbbbbbbb"},
-            new Product(){Id="5",Name="mirror",Price=50,Desc="bbbbbbbbbb"},
-            new Product(){Id="6",Name="mirror",Price=50,Desc="bbbbbbbbbb"}
-        };
 
         private readonly ProductService _productService = new();
 
+        //GetProducts
         [HttpGet]
         public IActionResult GetProducts()
         {
-            return Ok(productsList);
+            return Ok(_productService.GetProducts());
         }
 
+        //GetProductById
+        [HttpGet("{id}")]
+        public IActionResult GetProductById(int id)
+        {
+
+            return Ok(_productService.GetProductById(id));
+
+        }
+
+        //GetProductsByCategory
         [HttpGet]
         [Route("GetProductsByCategory")]
         public IActionResult GetProductsByCategory(string c)
         {
             return Ok(_productService.GetProductByCategory(c));
         }
+
+        //GetProductOrderByName
         [HttpGet]
         [Route("GetProductOrderByName")]
         public IActionResult GetProductOrderByName()
         {
             return Ok(_productService.GetProductOrderByName());
         }
+
+
+        //GetProductWithCategories
         [HttpGet]
         [Route("GetProductWithCategories")]
         public IActionResult GetProductWithCategories()
         {
             return Ok(_productService.GetProductWithCategories());
         }
+
+
+        //deleteProduct
+        [HttpDelete]
+        public IActionResult deleteProduct(int id)
+        {
+            return Ok(_productService.deleteProduct(id));
+        }
+
+
+        //productNotDeleted
         [HttpGet]
         [Route("productNotDeleted")]
         public IActionResult productNotDeleted()
         {
             return Ok(_productService.productNotDeleted());
         }
-        [HttpGet]
-        [Route("bags")]
-        public IActionResult bags()
-        {
-            return Ok(_productService.bags());
-        }
 
-        [HttpGet("{id}")]
-        public IActionResult GetById(string id)
-        {
-            Product? prod = productsList.Find(x => x.Id == id);
-            if (prod != null)
-            {
-                return Ok(prod);
-            }
-            else return Ok("not found");
-        }
-        [HttpPost]
-        public IActionResult CreateProduct([FromBody] List<CreateProductDto> prod)
-        { try
-            {
-                _productService.createProducts(prod);
-                return Ok(productsList);
-            }
 
-            catch (Exception ex)
-                {
-                    return BadRequest(ex.Message);
-                }
-
-        }
+        //CreateProducts
         [HttpPost]
         [Route("CreateProducts")]
         public IActionResult CreateProducts([FromBody] List<CreateProductDto> prod)
@@ -99,54 +89,30 @@ namespace ex01.Controllers
             }
 
         }
-        //[HttpPut("{id}")]
-        //public IActionResult Put(string id, [FromBody] Product p)
-        //{
-        //    Product? prod = productsList.Find(x => x.id == id);
-        //    if (prod != null)
-        //    {
-        //        prod.name = p.name;
-        //        prod.price = p.price;
-        //        prod.imageUrl = p.imageUrl;
-        //        prod.desc = p.desc;
-        //        prod.categories = p.categories;
-        //        prod.colors = p.colors;
-        //        prod.sale = p.sale;
 
-        //        return Ok(prod);
-        //    }
-        //    else
-        //        return Ok("not found");
-        //}
 
-        [HttpGet]
-        [Route("GetPermitRequests")]
-        public IActionResult GetPermitRequests([FromQuery] int page = 1, [FromQuery] int size = 5)
+        //UpdateProduct
+        [HttpPut("{id}")]
+        public IActionResult UpdateProduct(int id, [FromBody] Product p)
         {
+            return Ok(_productService.UpdateProduct(id, p));
+        }
 
-            var pageData = productsList
-            .Skip((page - 1) * size)
-            .Take(size)
-            .ToList();
+        //PaginationProducts
+        [HttpGet]
+        [Route("PaginationProducts")]
+        public IActionResult PaginationProducts([FromQuery] int page = 1, [FromQuery] int size = 5)
+        {
             var result = new
             {
-                Data = pageData,
+                Data = _productService.PaginationProducts(page, size),
                 CurrentPage = page,
                 PageSize = size,
-                TotalItems = productsList.Count
+                TotalItems = _productService.GetProducts().Count()
             };
             return Ok(result);
         }
-        [HttpDelete]
-        public IActionResult deleteProduct(string id)
-        {
-            return Ok(_productService.deleteProduct(id));
-        }
-        //[HttpPost("CreateCategoryWithProc")]
-        //public IActionResult CreateCategoryWithProc(string name)
-        //{
-        //    return Ok(_productService.CreateCategoryWithProc(name));
-        //}
+
     }
 
 }

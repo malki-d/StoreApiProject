@@ -42,7 +42,27 @@ namespace ex01.Dto
 
         public int Id { get; set; }
 
+        public string UserName { get; set; }
+
         public virtual Product Product { get; set; } = null!;
 
     }
+    public class CreateBagDto
+    {
+
+        public string ProductId { get; set; } 
+
+        public string UserId { get; set; } 
+
+    }
+    public class UserDto
+    {
+
+        public string Name { get; set; } = null!;
+
+        public string Email { get; set; } = null!;
+
+    }
+
+
 }

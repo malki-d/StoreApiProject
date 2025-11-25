@@ -9,7 +9,7 @@ builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
-builder.Services.AddDbContext<StoreDbContext>(options => options.UseSqlServer("Server=Srv2\\pupils;DataBase=Store_216308940__1;Integrated Security=SSPI;Persist Security Info=False;TrustServerCertificate=True;"));
+builder.Services.AddDbContext<StoreDbContext>(options => options.UseSqlServer("Server=Srv2\\pupils;DataBase=Store_216308940__new;Integrated Security=SSPI;Persist Security Info=False;TrustServerCertificate=True;"));
 
 var app = builder.Build();
 

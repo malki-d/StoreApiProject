@@ -23,15 +23,15 @@ namespace ex01.Migrations
 
             modelBuilder.Entity("CategoryProduct", b =>
                 {
-                    b.Property<int>("categoriesid")
+                    b.Property<int>("CategoriesId")
                         .HasColumnType("int");
 
-                    b.Property<string>("productsid")
-                        .HasColumnType("nvarchar(450)");
+                    b.Property<int>("ProductsId")
+                        .HasColumnType("int");
 
-                    b.HasKey("categoriesid", "productsid");
+                    b.HasKey("CategoriesId", "ProductsId");
 
-                    b.HasIndex("productsid");
+                    b.HasIndex("ProductsId");
 
                     b.ToTable("CategoryProduct");
                 });
@@ -44,124 +44,140 @@ namespace ex01.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<string>("productId")
+                    b.Property<string>("ProductId")
                         .IsRequired()
-                        .HasColumnType("nvarchar(450)");
+                        .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("userId")
+                    b.Property<int>("ProductId1")
+                        .HasColumnType("int");
+
+                    b.Property<string>("UserId")
                         .IsRequired()
                         .HasColumnType("nvarchar(450)");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("productId");
+                    b.HasIndex("ProductId1");
 
-                    b.HasIndex("userId");
+                    b.HasIndex("UserId");
 
                     b.ToTable("bags");
                 });
 
             modelBuilder.Entity("ex01.Models.Category", b =>
                 {
-                    b.Property<int>("id")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("id"));
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<string>("name")
+                    b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.HasKey("id");
+                    b.HasKey("Id");
 
                     b.ToTable("categories");
                 });
 
             modelBuilder.Entity("ex01.Models.Product", b =>
                 {
-                    b.Property<string>("id")
-                        .HasColumnType("nvarchar(450)");
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
 
-                    b.PrimitiveCollection<string>("colors")
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("Colors")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("desc")
+                    b.Property<string>("Desc")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("imageUrl")
+                    b.Property<string>("ImageUrl")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<bool>("isDeleted")
+                    b.Property<bool>("IsDeleted")
                         .HasColumnType("bit");
 
-                    b.Property<string>("name")
+                    b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("price")
+                    b.Property<int>("Price")
                         .HasColumnType("int");
 
-                    b.Property<int>("sale")
+                    b.Property<int>("Sale")
                         .HasColumnType("int");
 
-                    b.HasKey("id");
+                    b.HasKey("Id");
 
                     b.ToTable("products");
                 });
 
             modelBuilder.Entity("ex01.Models.User", b =>
                 {
-                    b.Property<string>("id")
+                    b.Property<string>("Id")
                         .HasColumnType("nvarchar(450)");
 
-                    b.Property<string>("email")
+                    b.Property<string>("Email")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("name")
+                    b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.HasKey("id");
+                    b.HasKey("Id");
 
-                    b.ToTable("User");
+                    b.ToTable("users");
                 });
 
             modelBuilder.Entity("CategoryProduct", b =>
                 {
                     b.HasOne("ex01.Models.Category", null)
                         .WithMany()
-                        .HasForeignKey("categoriesid")
+                        .HasForeignKey("CategoriesId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("ex01.Models.Product", null)
                         .WithMany()
-                        .HasForeignKey("productsid")
+                        .HasForeignKey("ProductsId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
 
             modelBuilder.Entity("ex01.Models.Bag", b =>
                 {
-                    b.HasOne("ex01.Models.Product", "product")
-                        .WithMany()
-                        .HasForeignKey("productId")
+                    b.HasOne("ex01.Models.Product", "Product")
+                        .WithMany("Bags")
+                        .HasForeignKey("ProductId1")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("ex01.Models.User", "user")
-                        .WithMany()
-                        .HasForeignKey("userId")
+                    b.HasOne("ex01.Models.User", "User")
+                        .WithMany("Bags")
+                        .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("product");
+                    b.Navigation("Product");
 
-                    b.Navigation("user");
+                    b.Navigation("User");
+                });
+
+            modelBuilder.Entity("ex01.Models.Product", b =>
+                {
+                    b.Navigation("Bags");
+                });
+
+            modelBuilder.Entity("ex01.Models.User", b =>
+                {
+                    b.Navigation("Bags");
                 });
 #pragma warning restore 612, 618
         }

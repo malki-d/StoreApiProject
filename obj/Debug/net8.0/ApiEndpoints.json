@@ -1,8 +1,8 @@
 [
   {
-    "ContainingType": "ex01.Controllers.ProductsController",
-    "Method": "GetProducts",
-    "RelativePath": "api/Products",
+    "ContainingType": "ex01.Controllers.BagsController",
+    "Method": "GetBags",
+    "RelativePath": "api/Bags",
     "HttpMethod": "GET",
     "IsController": true,
     "Order": 0,
@@ -10,19 +10,55 @@
     "ReturnTypes": []
   },
   {
-    "ContainingType": "ex01.Controllers.ProductsController",
-    "Method": "CreateProduct",
-    "RelativePath": "api/Products",
+    "ContainingType": "ex01.Controllers.BagsController",
+    "Method": "CreateBag",
+    "RelativePath": "api/Bags",
     "HttpMethod": "POST",
     "IsController": true,
     "Order": 0,
     "Parameters": [
       {
-        "Name": "prod",
-        "Type": "System.Collections.Generic.List\u00601[[ex01.Dto.CreateProductDto, ex01, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
+        "Name": "createBagDto",
+        "Type": "ex01.Dto.CreateBagDto",
         "IsRequired": true
       }
     ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "ex01.Controllers.CategoriesController",
+    "Method": "GetCategories",
+    "RelativePath": "api/Categories",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "ex01.Controllers.CategoriesController",
+    "Method": "CreateCategory",
+    "RelativePath": "api/Categories",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "name",
+        "Type": "System.String",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "ex01.Controllers.ProductsController",
+    "Method": "GetProducts",
+    "RelativePath": "api/Products",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
     "ReturnTypes": []
   },
   {
@@ -35,7 +71,7 @@
     "Parameters": [
       {
         "Name": "id",
-        "Type": "System.String",
+        "Type": "System.Int32",
         "IsRequired": false
       }
     ],
@@ -43,7 +79,7 @@
   },
   {
     "ContainingType": "ex01.Controllers.ProductsController",
-    "Method": "GetById",
+    "Method": "GetProductById",
     "RelativePath": "api/Products/{id}",
     "HttpMethod": "GET",
     "IsController": true,
@@ -51,7 +87,7 @@
     "Parameters": [
       {
         "Name": "id",
-        "Type": "System.String",
+        "Type": "System.Int32",
         "IsRequired": true
       }
     ],
@@ -59,12 +95,23 @@
   },
   {
     "ContainingType": "ex01.Controllers.ProductsController",
-    "Method": "bags",
-    "RelativePath": "api/Products/bags",
-    "HttpMethod": "GET",
+    "Method": "UpdateProduct",
+    "RelativePath": "api/Products/{id}",
+    "HttpMethod": "PUT",
     "IsController": true,
     "Order": 0,
-    "Parameters": [],
+    "Parameters": [
+      {
+        "Name": "id",
+        "Type": "System.Int32",
+        "IsRequired": true
+      },
+      {
+        "Name": "p",
+        "Type": "ex01.Models.Product",
+        "IsRequired": true
+      }
+    ],
     "ReturnTypes": []
   },
   {
@@ -79,27 +126,6 @@
         "Name": "prod",
         "Type": "System.Collections.Generic.List\u00601[[ex01.Dto.CreateProductDto, ex01, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
         "IsRequired": true
-      }
-    ],
-    "ReturnTypes": []
-  },
-  {
-    "ContainingType": "ex01.Controllers.ProductsController",
-    "Method": "GetPermitRequests",
-    "RelativePath": "api/Products/GetPermitRequests",
-    "HttpMethod": "GET",
-    "IsController": true,
-    "Order": 0,
-    "Parameters": [
-      {
-        "Name": "page",
-        "Type": "System.Int32",
-        "IsRequired": false
-      },
-      {
-        "Name": "size",
-        "Type": "System.Int32",
-        "IsRequired": false
       }
     ],
     "ReturnTypes": []
@@ -142,6 +168,27 @@
   },
   {
     "ContainingType": "ex01.Controllers.ProductsController",
+    "Method": "PaginationProducts",
+    "RelativePath": "api/Products/PaginationProducts",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "page",
+        "Type": "System.Int32",
+        "IsRequired": false
+      },
+      {
+        "Name": "size",
+        "Type": "System.Int32",
+        "IsRequired": false
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "ex01.Controllers.ProductsController",
     "Method": "productNotDeleted",
     "RelativePath": "api/Products/productNotDeleted",
     "HttpMethod": "GET",
@@ -161,24 +208,19 @@
     "ReturnTypes": []
   },
   {
-    "ContainingType": "ex01.Controllers.WeatherForecastController",
-    "Method": "Get",
-    "RelativePath": "WeatherForecast",
-    "HttpMethod": "GET",
+    "ContainingType": "ex01.Controllers.UserController",
+    "Method": "CreateUser",
+    "RelativePath": "api/User",
+    "HttpMethod": "POST",
     "IsController": true,
     "Order": 0,
-    "Parameters": [],
-    "ReturnTypes": [
+    "Parameters": [
       {
-        "Type": "System.Collections.Generic.IEnumerable\u00601[[ex01.WeatherForecast, ex01, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
-        "MediaTypes": [
-          "text/plain",
-          "application/json",
-          "text/json"
-        ],
-        "StatusCode": 200
+        "Name": "userDto",
+        "Type": "ex01.Dto.UserDto",
+        "IsRequired": true
       }
     ],
-    "EndpointName": "GetWeatherForecast"
+    "ReturnTypes": []
   }
 ]
