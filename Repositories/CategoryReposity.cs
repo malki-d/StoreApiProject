@@ -4,16 +4,19 @@ using ex01.Models;
 
 namespace ex01.Repositories
 {
-    public class CategoryReposity
+    public class CategoryReposity : ICategoryReposity
     {
-        StoreDbContext context = StoreContextFactory.CreateContext();
-
+        private readonly StoreDbContext context;
+        public CategoryReposity(StoreDbContext context1)
+        {
+            context = context1;
+        }
 
         //GetCategories
         public List<string> GetCategories()
         {
             return context.categories
-            .Select(a =>a.Name )
+            .Select(a => a.Name)
             .ToList();
         }
 
@@ -25,7 +28,7 @@ namespace ex01.Repositories
             {
                 context.categories.Add(new Category()
                 {
-                   Name=name
+                    Name = name
                 });
                 context.SaveChanges();
                 return true;

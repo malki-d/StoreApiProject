@@ -7,10 +7,13 @@ using Microsoft.EntityFrameworkCore;
 
 namespace ex01.Repositories
 {
-    public class ProductRepository
+    public class ProductRepository : IProductRepository
     {
-        StoreDbContext context = StoreContextFactory.CreateContext();
-
+        private readonly StoreDbContext context;
+        public ProductRepository(StoreDbContext context1)
+        {
+            context = context1;
+        }
 
         //GetProducts
         public List<ProductDto> GetProducts()
@@ -47,7 +50,7 @@ namespace ex01.Repositories
             item.ImageUrl = p.ImageUrl;
             item.Price = p.Price;
             item.Desc = p.Desc;
-            item.Sale= p.Sale;
+            item.Sale = p.Sale;
             item.Colors = p.Colors;
             context.SaveChanges();
             return GetProductById(id);
@@ -147,8 +150,8 @@ namespace ex01.Repositories
 
 
         //PaginationProducts
-        public List<ProductDto> PaginationProducts( int page = 1, int size = 5)
-        {            
+        public List<ProductDto> PaginationProducts(int page = 1, int size = 5)
+        {
             return GetProducts()
             .Skip((page - 1) * size)
             .Take(size)

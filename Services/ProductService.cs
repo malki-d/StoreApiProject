@@ -4,9 +4,13 @@ using ex01.Repositories;
 
 namespace ex01.Services
 {
-    public class ProductService
+    public class ProductService : IProductService
     {
-        private readonly ProductRepository _repository = new();
+        private readonly IProductRepository _repository ;
+        public ProductService(IProductRepository repository)
+        {
+            _repository=repository;
+        }
 
         //GetProducts
         public List<ProductDto> GetProducts()

@@ -11,7 +11,11 @@ namespace ex01.Controllers
     public class ProductsController : ControllerBase
     {
 
-        private readonly ProductService _productService = new();
+        private readonly IProductService _productService ;
+        public ProductsController(IProductService productService)
+        {
+            _productService = productService ;
+        }
 
         //GetProducts
         [HttpGet]

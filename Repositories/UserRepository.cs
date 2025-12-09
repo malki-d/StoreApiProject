@@ -4,10 +4,13 @@ using ex01.Models;
 
 namespace ex01.Repositories
 {
-    public class UserRepository
+    public class UserRepository : IUserRepository
     {
-        StoreDbContext context = StoreContextFactory.CreateContext();
-
+        private readonly StoreDbContext context;
+        public UserRepository(StoreDbContext context1)
+        {
+            context = context1;
+        }
 
         //GetUsers
         public List<UserDto> GetUsers()

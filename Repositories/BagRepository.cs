@@ -1,13 +1,18 @@
 ﻿using ex01.Data;
 using ex01.Dto;
 using ex01.Models;
+using System;
+using AutoMapper;
 
 namespace ex01.Repositories
 {
-    public class BagRepository
+    public class BagRepository : IBagRepository
     {
-        StoreDbContext context = StoreContextFactory.CreateContext();
-
+        private readonly StoreDbContext context;
+        public BagRepository(StoreDbContext context1)
+        {
+            context = context1;
+        }
 
         //GetBags
         public List<BagDto> GetBags()
@@ -17,7 +22,7 @@ namespace ex01.Repositories
             {
                 Id = a.Id,
                 UserName = a.User.Name,
-                Product=a.Product
+                Product = a.Product
             }).ToList();
         }
 
@@ -39,8 +44,8 @@ namespace ex01.Repositories
             {
                 return false;
             }
-           
-         
+
+
         }
 
 

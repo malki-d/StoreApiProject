@@ -3,9 +3,13 @@ using ex01.Repositories;
 
 namespace ex01.Services
 {
-    public class UserService
+    public class UserService : IUserService
     {
-        private readonly UserRepository _repository = new();
+        private readonly IUserRepository _repository ;
+        public UserService(IUserRepository repository)
+        {
+            _repository = repository ;
+        }
 
         //GetUsers
         public List<UserDto> GetUsers()

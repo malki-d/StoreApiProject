@@ -3,9 +3,13 @@ using ex01.Repositories;
 
 namespace ex01.Services
 {
-    public class CategoryService
+    public class CategoryService : ICategoryService
     {
-        private readonly CategoryReposity _repository = new();
+        private readonly ICategoryReposity _repository ;
+        public CategoryService(ICategoryReposity repository)
+        {
+            _repository = repository;
+        }
 
         //GetCategories
         public List<string> GetCategories()

@@ -10,7 +10,11 @@ namespace ex01.Controllers
     [ApiController]
     public class UserController : ControllerBase
     {
-        private readonly UserService _service = new();
+        private readonly UserService _service;
+        public UserController(UserService service)
+        {
+                _service = service;
+        }
 
         //GetUsers
         [HttpGet]

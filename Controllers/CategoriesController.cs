@@ -9,7 +9,11 @@ namespace ex01.Controllers
     [ApiController]
     public class CategoriesController : ControllerBase
     {
-        private readonly CategoryService _service = new();
+        private readonly ICategoryService _service  ;
+        public CategoriesController(ICategoryService service)
+        {
+            _service=service;
+        }
 
         //GetCategories
         [HttpGet]

@@ -456,3 +456,5 @@ M:\web\ex01\ex01\bin\Debug\net8.0\runtimes\win\lib\net7.0\System.Drawing.Common.
 M:\web\ex01\ex01\bin\Debug\net8.0\runtimes\win\lib\net7.0\System.Security.Cryptography.ProtectedData.dll
 M:\web\ex01\ex01\bin\Debug\net8.0\runtimes\win\lib\net7.0\System.Windows.Extensions.dll
 M:\web\ex01\ex01\obj\Debug\net8.0\staticwebassets.upToDateCheck.txt
+M:\web\ex01\ex01\bin\Debug\net8.0\AutoMapper.dll
+M:\web\ex01\ex01\bin\Debug\net8.0\AutoMapper.Extensions.Microsoft.DependencyInjection.dll

@@ -17,7 +17,11 @@ namespace ex01.Controllers
     [ApiController]
     public class BagsController : ControllerBase
     {
-        private readonly BagService _service = new();
+        private readonly IBagService _service ;
+        public BagsController(IBagService service)
+        {
+            _service = service;
+        }
 
         //GetBags
         [HttpGet]
